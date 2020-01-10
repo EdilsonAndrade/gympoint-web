@@ -31,6 +31,7 @@ module.exports = {
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "prettier/prettier":"error",
     "quotes":['error', 'single'],
-    "react/jsx-props-no-spreading": "off"
+    "react/jsx-props-no-spreading": "off",
+    "jsx-a11y/control-has-associated-label": ["off"]
   },
 };
