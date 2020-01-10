@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
   width: 100%;
@@ -48,7 +47,4 @@ export const Content = styled.div`
       background: none;
     }
   }
-`;
-export const Menu = styled(Link)`
-  color: ${props => (props.active ? '#000000' : '#999999')};
 `;
