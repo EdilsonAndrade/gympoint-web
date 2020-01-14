@@ -1,22 +1,28 @@
 import React from 'react';
-
+import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
+import ButtonDiv from './styles';
 
 export default function Student() {
   const handleCadastrar = () => {
-    console.log('cadastrar');
+    history.push('/studentform');
   };
   return (
     <>
       <div>
         <strong>Gerenciar alunos</strong>
-        <div>
-          <Button buttonType="button" handleClick={handleCadastrar}>
+        <ButtonDiv>
+          <Button
+            buttonType="button"
+            saveButton
+            icon="add"
+            handleClick={handleCadastrar}
+          >
             Cadastrar
           </Button>
           <input type="text" placeholder="Buscar aluno" />
-        </div>
+        </ButtonDiv>
       </div>
       <Grid>
         <thead>

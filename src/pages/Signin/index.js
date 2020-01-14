@@ -7,8 +7,7 @@ import history from '../../services/history';
 
 export default function Signin() {
   const handleLogin = data => {
-    console.log(data);
-    history.push('/student');
+    console.tron.log(data);
   };
   return (
     <Container>

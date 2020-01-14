@@ -1,17 +1,17 @@
 import React from 'react';
-
+import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 
 export default function Plan() {
   const handleCadastrar = () => {
-    console.log('cadastrar');
+    history.push('/planform');
   };
   return (
     <>
       <div>
         <strong>Gerenciar Planos</strong>
-        <Button buttonType="button" handleClick={handleCadastrar}>
+        <Button buttonType="button" saveButton handleClick={handleCadastrar}>
           Cadastrar
         </Button>
       </div>

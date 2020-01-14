@@ -1,17 +1,19 @@
 import React from 'react';
-
+import { MdCheck } from 'react-icons/md';
+import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
+import { Status, Actions } from './styles';
 
 export default function Registraion() {
   const handleCadastrar = () => {
-    console.log('cadastrar');
+    history.push('/registrationform');
   };
   return (
     <>
       <div>
         <strong>Gerenciar matrículas</strong>
-        <Button buttonType="button" handleClick={handleCadastrar}>
+        <Button buttonType="button" saveButton handleClick={handleCadastrar}>
           Cadastrar
         </Button>
       </div>
@@ -22,6 +24,7 @@ export default function Registraion() {
             <th>PLANO</th>
             <th>INICIO</th>
             <th>TÉRMINO</th>
+            <th>ATIVA</th>
             <th />
             <th />
           </tr>
@@ -33,22 +36,15 @@ export default function Registraion() {
             <td>30 de Abril de 2019</td>
             <td>30 de Maior de 2019</td>
             <td>
-              <span>editar</span>
+              <Status active>
+                <MdCheck size={15} color="#fff" />
+              </Status>
             </td>
             <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Michale</td>
-            <td>Start</td>
-            <td>30 de Abril de 2019</td>
-            <td>30 de Maior de 2019</td>
-            <td>
-              <span>editar</span>
+              <Actions>editar</Actions>
             </td>
             <td>
-              <strong>apagar</strong>
+              <Actions delete>apagar</Actions>
             </td>
           </tr>
           <tr>
@@ -57,22 +53,15 @@ export default function Registraion() {
             <td>30 de Abril de 2019</td>
             <td>30 de Maior de 2019</td>
             <td>
-              <span>editar</span>
+              <Status active>
+                <MdCheck size={15} color="#fff" />
+              </Status>
             </td>
             <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Michale</td>
-            <td>Start</td>
-            <td>30 de Abril de 2019</td>
-            <td>30 de Maior de 2019</td>
-            <td>
-              <span>editar</span>
+              <Actions>editar</Actions>
             </td>
             <td>
-              <strong>apagar</strong>
+              <Actions delete>apagar</Actions>
             </td>
           </tr>
           <tr>
@@ -81,22 +70,15 @@ export default function Registraion() {
             <td>30 de Abril de 2019</td>
             <td>30 de Maior de 2019</td>
             <td>
-              <span>editar</span>
+              <Status>
+                <MdCheck size={15} color="#fff" />
+              </Status>
             </td>
             <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Michale</td>
-            <td>Start</td>
-            <td>30 de Abril de 2019</td>
-            <td>30 de Maior de 2019</td>
-            <td>
-              <span>editar</span>
+              <Actions>editar</Actions>
             </td>
             <td>
-              <strong>apagar</strong>
+              <Actions delete>apagar</Actions>
             </td>
           </tr>
           <tr>
@@ -105,10 +87,66 @@ export default function Registraion() {
             <td>30 de Abril de 2019</td>
             <td>30 de Maior de 2019</td>
             <td>
-              <span>editar</span>
+              <Status active>
+                <MdCheck size={15} color="#fff" />
+              </Status>
             </td>
             <td>
-              <strong>apagar</strong>
+              <Actions>editar</Actions>
+            </td>
+            <td>
+              <Actions delete>apagar</Actions>
+            </td>
+          </tr>
+          <tr>
+            <td>Michale</td>
+            <td>Start</td>
+            <td>30 de Abril de 2019</td>
+            <td>30 de Maior de 2019</td>
+            <td>
+              <Status>
+                <MdCheck size={15} color="#fff" />
+              </Status>
+            </td>
+            <td>
+              <Actions>editar</Actions>
+            </td>
+            <td>
+              <Actions delete>apagar</Actions>
+            </td>
+          </tr>
+          <tr>
+            <td>Michale</td>
+            <td>Start</td>
+            <td>30 de Abril de 2019</td>
+            <td>30 de Maior de 2019</td>
+            <td>
+              <Status active>
+                <MdCheck size={15} color="#fff" />
+              </Status>
+            </td>
+            <td>
+              <Actions>editar</Actions>
+            </td>
+            <td>
+              <Actions delete>apagar</Actions>
+            </td>
+          </tr>
+          <tr>
+            <td>Michale</td>
+            <td>Start</td>
+            <td>30 de Abril de 2019</td>
+            <td>30 de Maior de 2019</td>
+            <td>
+              <Status active>
+                <MdCheck size={15} color="#fff" />
+              </Status>
+            </td>
+            <td>
+              <Actions>editar</Actions>
+            </td>
+            <td>
+              <Actions delete>apagar</Actions>
             </td>
           </tr>
         </tbody>
