@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { lighten } from 'polished';
 
 export const Container = styled.div`
   background: #ee4d64;
@@ -29,6 +30,10 @@ export const Container = styled.div`
       font-weight: bold;
       font-size: 16px;
       border-radius: 4px;
+      transition: 1s;
+      &:hover {
+        background: ${lighten(0.2, '#ee4d64')};
+      }
     }
   }
   strong {

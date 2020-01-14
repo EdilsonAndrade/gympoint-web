@@ -1,20 +1,28 @@
 import { call, put, all, takeLatest } from 'redux-saga/effects';
+import { toast } from 'react-toastify';
 import api from '../../../services/api';
-import { signinSuccess } from './actions';
+import history from '../../../services/history';
+import { signinSuccess, signinFailed } from './actions';
 
 function* signinRequest({ payload }) {
-  const { email, password } = payload;
+  const { email, password } = payload.data;
 
   try {
-    const response = yield call(api.post, { email, password });
-
-    if (response.data && response.data.token) {
-      const { token } = response.data;
-      api.defaults.Authorization = token;
-      yield put(signinSuccess(token));
+    if (email && password) {
+      const response = yield call(api.post, '/sessions', { email, password });
+      if (response.data && response.data.token) {
+        const { token } = response.data;
+        api.defaults.Authorization = token;
+        yield put(signinSuccess(token));
+        history.push('/student');
+      }
+    } else {
+      toast.error('Usuário ou senha inválidos');
+      yield put(signinFailed());
     }
   } catch (error) {
-    console.tron.warn(error);
+    toast.error('Usuário ou senha inválidos');
+    yield put(signinFailed());
   }
 }
 

@@ -1,13 +1,15 @@
 import React from 'react';
 import { Input, Form } from '@rocketseat/unform';
-
+import { useDispatch, useSelector } from 'react-redux';
 import { Container, Email, Password } from './styles';
 import Logo from '../../assets/logo.svg';
-import history from '../../services/history';
+import { signinRequest } from '../../store/modules/signin/actions';
 
 export default function Signin() {
+  const loading = useSelector(state => state.signin.loading);
+  const dispatch = useDispatch();
   const handleLogin = data => {
-    console.tron.log(data);
+    dispatch(signinRequest(data));
   };
   return (
     <Container>
@@ -21,7 +23,9 @@ export default function Signin() {
           <strong>SUA SENHA</strong>
           <Input type="password" name="password" placeholder="*******" />
         </Password>
-        <button type="submit">Entrar no sistema</button>
+        <button type="submit">
+          {loading ? 'Carregando' : 'Entrar no sistema'}
+        </button>
       </Form>
     </Container>
   );

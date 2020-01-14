@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
-
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer } from 'react-toastify';
 import './config/ReactotronConfig';
 import Routes from './routes';
 import GlobalStyles from './styles/global';
@@ -17,6 +18,7 @@ function App() {
           <GlobalStyles />
         </Router>
       </BrowserRouter>
+      <ToastContainer />
     </Provider>
   );
 }
