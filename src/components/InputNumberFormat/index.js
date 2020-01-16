@@ -1,39 +1,24 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect } from 'react';
 import NumberFormat from 'react-number-format';
 import PropTypes from 'prop-types';
 import { useField } from '@rocketseat/unform';
 
 export default function InputNumberFormatForm({ name, label, ...rest }) {
   const ref = useRef();
-  const { fieldName, registerField, error, defaultValue } = useField(name);
-  const [value, setValue] = useState(defaultValue);
+  const { fieldName, registerField, error } = useField(name);
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: ref.current,
-      path: 'state.value',
+      path: 'props.formvalue',
       clearValue: maskRef => {
         maskRef.clear();
       },
     });
   },[ref.current, fieldName]); // eslint-disable-line
 
-  const {
-    type,
-    thousandSeparator,
-    decimalSeparator,
-    decimalScale,
-    fixedDecimalScale,
-    prefix,
-  } = rest;
   const props = {
-    type,
-    thousandSeparator,
-    decimalSeparator,
-    decimalScale,
-    fixedDecimalScale,
-    prefix,
-    value,
+    ...rest,
   };
   return (
     <>

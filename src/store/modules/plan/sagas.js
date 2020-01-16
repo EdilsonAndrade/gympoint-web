@@ -12,7 +12,7 @@ function* saveRequest({ payload }) {
       const response = yield call(api.put, `/plans/${id}`, {
         title,
         duration,
-        price,
+        price: Number(price.replace(/[^0-9.]/g, '')),
       });
       yield put(saveSuccess(response.data));
       toast.success('Plano atualizado com sucesso');
@@ -20,7 +20,7 @@ function* saveRequest({ payload }) {
       const response = yield call(api.post, '/plans', {
         title,
         duration,
-        price,
+        price: Number(price.replace(/[^0-9.]/g, '')),
       });
       yield put(saveSuccess(response.data));
       toast.success('Plano cadastrado com sucesso');
@@ -28,11 +28,11 @@ function* saveRequest({ payload }) {
 
     yield put(stopLoading());
 
-    history.push('/plan');
+    history.push('/plans');
   } catch (error) {
     yield put(stopLoading());
     toast.error('Ocorreu erro no servidor, tente novamente', error);
   }
 }
 
-export default all([takeLatest('@plans/SAVE_REQUEST', saveRequest)]);
+export default all([takeLatest('@plan/SAVE_REQUEST', saveRequest)]);

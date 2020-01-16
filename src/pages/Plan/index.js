@@ -1,12 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
+import api from '~/services/api';
+import { saveSuccess } from '~/store/modules/plan/actions';
 
 export default function Plan() {
+  const dispatch = useDispatch();
+  const [plans, setPlans] = useState([]);
+
   const handleCadastrar = () => {
+    dispatch(saveSuccess(''));
     history.push('/planform');
   };
+  const handleEditar = plan => {
+    dispatch(saveSuccess(plan));
+    history.push({ pathname: '/planform', state: plan });
+  };
+  async function handleDelete(id) {
+    if (window.confirm('Tem certeza que quer excluir este registro?')) {
+      try {
+        const response = await api.delete(`/plans/${id}`);
+        setPlans(response.data);
+      } catch (error) {
+        toast.error(`Ocorreu um erro : ${error}`);
+      }
+    }
+  }
+
+  useEffect(() => {
+    async function getPlans() {
+      const response = await api.get('/plans');
+      const { data } = response;
+      setPlans(data);
+    }
+    getPlans();
+  }, []);
+
   return (
     <>
       <div>
@@ -26,39 +58,31 @@ export default function Plan() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Start</td>
-            <td>1 mês</td>
-            <td>R$ 129,00</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Gold</td>
-            <td>3 meses</td>
-            <td>R$109,00</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Diamond</td>
-            <td>6 meses</td>
-            <td>R$89,00</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
+          {plans.map(plan => (
+            <tr key={plan.id}>
+              <td>{plan.title}</td>
+              <td>{plan.duration}</td>
+              <td>{plan.price}</td>
+              <td>
+                <button
+                  type="button"
+                  id="edit"
+                  onClick={() => handleEditar(plan)}
+                >
+                  editar
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  id="delete"
+                  onClick={() => handleDelete(plan.id)}
+                >
+                  apagar
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Grid>
     </>

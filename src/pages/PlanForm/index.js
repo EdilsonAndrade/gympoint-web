@@ -6,7 +6,7 @@ import history from '../../services/history';
 import Button from '../../components/Button';
 import { Content, Spinner } from './styles';
 import { startLoading } from '~/store/modules/loading/actions';
-import { saveRequest } from '~/store/modules/student/actions';
+import { saveRequest } from '~/store/modules/plan/actions';
 import InputNumberFormatForm from '~/components/InputNumberFormat';
 
 const schema = Yup.object().shape({
@@ -14,10 +14,11 @@ const schema = Yup.object().shape({
   duration: Yup.number(
     'Duration deve ser maior que zero e números inteiros'
   ).required('Duration deve ser maior que zero e números inteiros'),
-  price: Yup.number()
-    .min(10, 'Preço deve ser informado')
+  price: Yup.string()
+    .min(1, 'Preço deve ser informado')
     .required('Preço deve ser informado'),
 });
+
 export default function PlanForm() {
   const dispatch = useDispatch();
   const planData = useSelector(state => state.plan);
@@ -46,12 +47,11 @@ export default function PlanForm() {
     }
   }, [montlhyPrice, duration]);
   const handleBack = () => {
-    history.push('/student');
+    history.push('/plans');
   };
   const handleSave = data => {
-    console.tron.log(data);
-    // dispatch(startLoading());
-    // dispatch(saveRequest({ ...data, id: planData.id }));
+    dispatch(startLoading());
+    dispatch(saveRequest({ ...data, id: planData.id }));
   };
   function handleChangeDuration(value) {
     setDuration(value);
@@ -61,7 +61,7 @@ export default function PlanForm() {
     setMonthlyPrice(value);
   }
   return (
-    <Form onSubmit={handleSave}>
+    <Form schema={schema} onSubmit={handleSave} initialData={planData}>
       <div>
         <strong>{editMode ? 'Edição de plano' : 'Cadastro do plano'}</strong>
         <div>
@@ -82,7 +82,7 @@ export default function PlanForm() {
 
       <Content>
         <Input
-          name="name"
+          name="title"
           placeholder="Titulo do plano"
           label="Título do plano"
         />
@@ -103,7 +103,7 @@ export default function PlanForm() {
               label="Preço Mensal"
               name="price"
               type="text"
-              value={montlhyPrice}
+              formvalue={montlhyPrice}
               onValueChange={values => {
                 handleMontlyChange(values);
               }}
