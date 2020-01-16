@@ -22,14 +22,17 @@ export const Content = styled.table`
       margin: 0;
       padding: 10px 0;
       border-bottom: 1px solid #979797;
-      span {
+      button#edit {
         color: #4d85ee;
-        font-size: 10px;
+        font-size: 12px;
+        border: none;
+        background: transparent;
       }
-      strong {
-        font-weight: lighter;
-        font-size: 10px;
+      button#delete {
         color: #de3b3b;
+        font-size: 12px;
+        border: none;
+        background: transparent;
       }
     }
   }

@@ -1,13 +1,54 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import ButtonDiv from './styles';
+import api from '~/services/api';
+import { saveSuccess } from '~/store/modules/student/actions';
 
 export default function Student() {
+  const dispatch = useDispatch();
+  const [searchValue, setSearchValue] = useState('');
+  const [students, setStudents] = useState([]);
+
   const handleCadastrar = () => {
+    dispatch(saveSuccess(''));
     history.push('/studentform');
   };
+
+  async function handleSearchStudent(e) {
+    const response = await api.get(`/students?name=${e}`);
+    const { data } = response;
+    setStudents(data);
+  }
+
+  const handleEditar = student => {
+    dispatch(saveSuccess(student));
+    history.push({ pathname: '/studentform', state: student });
+  };
+
+  async function handleDelete(id) {
+    if (window.confirm('Tem certeza que quer excluir este registro?')) {
+      try {
+        const response = await api.delete(`/students/${id}`);
+        setStudents(response.data);
+      } catch (error) {
+        toast.error(`Ocorreu um erro : ${error}`);
+      }
+    }
+  }
+
+  useEffect(() => {
+    async function getStudents() {
+      const response = await api.get('/students');
+      const { data } = response;
+      setStudents(data);
+    }
+    getStudents();
+  }, []);
+
   return (
     <>
       <div>
@@ -21,7 +62,15 @@ export default function Student() {
           >
             Cadastrar
           </Button>
-          <input type="text" placeholder="Buscar aluno" />
+          <input
+            type="text"
+            value={searchValue}
+            placeholder="Buscar aluno"
+            onChange={e => {
+              setSearchValue(e.target.value);
+              handleSearchStudent(e.target.value);
+            }}
+          />
         </ButtonDiv>
       </div>
       <Grid>
@@ -35,105 +84,31 @@ export default function Student() {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
-          <tr>
-            <td>Usuario Fake</td>
-            <td>exemplo@gmail.com</td>
-            <td>exemplo@gmail.com</td>
-            <td>
-              <span>editar</span>
-            </td>
-            <td>
-              <strong>apagar</strong>
-            </td>
-          </tr>
+          {students.map(student => (
+            <tr key={student.id}>
+              <td>{student.name}</td>
+              <td>{student.email}</td>
+              <td>{student.age}</td>
+              <td>
+                <button
+                  type="button"
+                  id="edit"
+                  onClick={() => handleEditar(student)}
+                >
+                  editar
+                </button>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  id="delete"
+                  onClick={() => handleDelete(student.id)}
+                >
+                  apagar
+                </button>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Grid>
     </>

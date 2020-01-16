@@ -11,9 +11,3 @@ export const signinSuccess = token => {
     payload: token,
   };
 };
-
-export const signinFailed = () => {
-  return {
-    type: '@signin/SIGNIN_FAILED',
-  };
-};

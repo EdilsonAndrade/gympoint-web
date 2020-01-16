@@ -1,6 +1,18 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { FaSpinner } from 'react-icons/fa';
 
-const Content = styled.div`
+const rotate = keyframes`
+  from{
+    transform: rotate(0deg)
+  }
+  to{
+    transform: rotate(360deg)
+  }
+`;
+export const Spinner = styled(FaSpinner)`
+  animation: ${rotate} 2s linear infinite;
+`;
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -30,6 +42,11 @@ const Content = styled.div`
     border-radius: 4px;
     margin-top: 4px;
     margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  span {
+    text-align: left;
+    color: #f49494;
+    font-weight: bold;
   }
 `;
-export default Content;

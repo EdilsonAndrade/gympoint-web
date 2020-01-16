@@ -23,6 +23,13 @@ module.exports = {
     'react',
     'prettier'
   ],
+  settings:{
+    'import/resolver':{
+      "babel-plugin-root-import":{
+        rootPathSuffix: "src"
+      }
+    }
+  },
   rules: {
     "class-methods-use-this": "off",
     "no-param-reassign":"off",

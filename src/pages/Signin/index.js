@@ -4,11 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Container, Email, Password } from './styles';
 import Logo from '../../assets/logo.svg';
 import { signinRequest } from '../../store/modules/signin/actions';
+import { startLoading } from '../../store/modules/loading/actions';
 
 export default function Signin() {
-  const loading = useSelector(state => state.signin.loading);
+  const loading = useSelector(state => state.load.loading);
+
   const dispatch = useDispatch();
+
   const handleLogin = data => {
+    dispatch(startLoading());
     dispatch(signinRequest(data));
   };
   return (
