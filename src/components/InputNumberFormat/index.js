@@ -10,7 +10,7 @@ export default function InputNumberFormatForm({ name, label, ...rest }) {
     registerField({
       name: fieldName,
       ref: ref.current,
-      path: 'props.formvalue',
+      path: 'props.value',
       clearValue: maskRef => {
         maskRef.clear();
       },

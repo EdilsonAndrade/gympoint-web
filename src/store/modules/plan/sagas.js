@@ -22,6 +22,7 @@ function* saveRequest({ payload }) {
         duration,
         price: Number(price.replace(/[^0-9.]/g, '')),
       });
+
       yield put(saveSuccess(response.data));
       toast.success('Plano cadastrado com sucesso');
     }
@@ -30,8 +31,9 @@ function* saveRequest({ payload }) {
 
     history.push('/plans');
   } catch (error) {
+    const { response } = error;
     yield put(stopLoading());
-    toast.error('Ocorreu erro no servidor, tente novamente', error);
+    toast.error(`Ocorreu erro no servidor, tente novamente ${response.data}`);
   }
 }
 

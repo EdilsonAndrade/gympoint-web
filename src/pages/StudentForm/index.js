@@ -13,16 +13,15 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email('E-mail deve ser informado corretamente')
     .required('E-mail deve ser informado corretamente'),
-  name: Yup.string('Nome deve conter ao menos 15 caracteres')
-    .required('Nome deve conter ao menos 15 caracteres')
-    .min(10, 'Nome deve conter ao menos 15 caracteres'),
-  age: Yup.number('Idade deve ser igual ou maior que 18 anos')
+  name: Yup.string('Nome deve conter ao menos 15 caracteres').required(
+    'Nome deve conter ao menos 15 caracteres'
+  ),
 
-    .required('Idade deve ser igual ou maior que 18 anos')
-    .min(18, 'Idade deve ser igual ou maior que 18 anos'),
-  height: Yup.number()
-    .min(50, 'Altura deve ser maior que 60cm')
-    .required('Altura é obrigatória'),
+  age: Yup.string('Idade deve ser igual ou maior que 18 anos').required(
+    'Idade deve ser igual ou maior que 18 anos'
+  ),
+
+  height: Yup.string().required('Altura é obrigatória'),
   weight: Yup.string().required('Peso é obrigatório'),
 });
 export default function StudentForm() {
@@ -37,6 +36,7 @@ export default function StudentForm() {
       setEditMode(true);
     }
   }, [studentData.id]);
+
   const handleBack = () => {
     history.push('/student');
   };

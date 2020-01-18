@@ -34,7 +34,6 @@ export const Content = styled.div`
     font-size: 18px;
     margin-top: 15px;
     font-weight: bold;
-    text-transform: uppercase;
   }
   input {
     padding: 15px;
@@ -42,11 +41,11 @@ export const Content = styled.div`
     border-radius: 4px;
     margin-top: 4px;
     margin-bottom: 12px;
-    text-transform: uppercase;
   }
   span {
     text-align: left;
-    color: #f49494;
+    color: #de3b3b;
     font-weight: bold;
+    width: 100%;
   }
 `;

@@ -1,39 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import ButtonDiv from './styles';
 import api from '~/services/api';
-import { saveSuccess } from '~/store/modules/student/actions';
+import { saveSuccess, loadSuccess } from '~/store/modules/student/actions';
+import Pagination from '~/components/Pagination';
 
 export default function Student() {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
-  const [students, setStudents] = useState([]);
-
+  const students = useSelector(state => state.student.students);
+  const [previousPage, setPreviousPage] = useState(0);
+  const [nextPage, setNextPage] = useState(2);
+  const [page, setPage] = useState(1);
   const handleCadastrar = () => {
     dispatch(saveSuccess(''));
-    history.push('/studentform');
+    history.push('/student/studentform');
   };
 
   async function handleSearchStudent(e) {
     const response = await api.get(`/students?name=${e}`);
     const { data } = response;
-    setStudents(data);
+    dispatch(loadSuccess(data));
   }
 
   const handleEditar = student => {
     dispatch(saveSuccess(student));
-    history.push({ pathname: '/studentform', state: student });
+    history.push({ pathname: '/student/studentform', state: student });
   };
 
+  const handlePreviousPage = () => {
+    setPreviousPage(previousPage - 1);
+    setPage(page - 1);
+  };
+  const handleNextPage = () => {
+    setNextPage(nextPage + 1);
+    setPage(page + 1);
+  };
   async function handleDelete(id) {
     if (window.confirm('Tem certeza que quer excluir este registro?')) {
       try {
         const response = await api.delete(`/students/${id}`);
-        setStudents(response.data);
+        dispatch(loadSuccess(response.data));
       } catch (error) {
         toast.error(`Ocorreu um erro : ${error}`);
       }
@@ -42,12 +53,15 @@ export default function Student() {
 
   useEffect(() => {
     async function getStudents() {
-      const response = await api.get('/students');
+      const response = await api.get(`/students?limit=2&page=${page}`);
       const { data } = response;
-      setStudents(data);
+      dispatch(loadSuccess(data));
+      if (response.data.length <= 0) {
+        setPage(page - 1);
+      }
     }
     getStudents();
-  }, []);
+  }, [dispatch, page]);
 
   return (
     <>
@@ -78,7 +92,7 @@ export default function Student() {
           <tr>
             <th>NOME</th>
             <th>EMAIL</th>
-            <th>IDADE</th>
+            <th style={{ textAlign: 'center' }}>IDADE</th>
             <th />
             <th />
           </tr>
@@ -88,7 +102,7 @@ export default function Student() {
             <tr key={student.id}>
               <td>{student.name}</td>
               <td>{student.email}</td>
-              <td>{student.age}</td>
+              <td style={{ textAlign: 'center' }}>{student.age}</td>
               <td>
                 <button
                   type="button"
@@ -111,6 +125,12 @@ export default function Student() {
           ))}
         </tbody>
       </Grid>
+      <Pagination
+        handleBackPage={() => handlePreviousPage(previousPage)}
+        showBack={page > 1}
+        showForward={students.length > 0}
+        handleForwardPage={() => handleNextPage(nextPage)}
+      />
     </>
   );
 }

@@ -11,3 +11,10 @@ export const saveSuccess = data => {
     payload: data,
   };
 };
+
+export const loadSuccess = data => {
+  return {
+    type: '@student/LOAD_SUCCESS',
+    payload: data,
+  };
+};

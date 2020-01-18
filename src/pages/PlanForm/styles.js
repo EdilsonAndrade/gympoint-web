@@ -23,6 +23,7 @@ export const Content = styled.div`
   > label,
   input {
     width: 100%;
+    text-transform: uppercase;
   }
 
   > div {
@@ -61,8 +62,12 @@ export const Content = styled.div`
       display: flex;
       flex-direction: column;
     }
-    > select,
-    input {
-    }
+  }
+
+  span {
+    text-align: left;
+    color: #de3b3b;
+    font-weight: bold;
+    width: 100%;
   }
 `;

@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import api from '~/services/api';
-import { saveSuccess } from '~/store/modules/plan/actions';
+import { saveSuccess, loadSuccess } from '~/store/modules/plan/actions';
 
 export default function Plan() {
   const dispatch = useDispatch();
-  const [plans, setPlans] = useState([]);
-
+  const plans = useSelector(state => state.plan.plans);
   const handleCadastrar = () => {
     dispatch(saveSuccess(''));
-    history.push('/planform');
+    history.push('/plans/planform');
   };
   const handleEditar = plan => {
     dispatch(saveSuccess(plan));
-    history.push({ pathname: '/planform', state: plan });
+    history.push({ pathname: '/plans/planform', state: plan });
   };
   async function handleDelete(id) {
     if (window.confirm('Tem certeza que quer excluir este registro?')) {
       try {
         const response = await api.delete(`/plans/${id}`);
-        setPlans(response.data);
+        dispatch(loadSuccess(response.data));
       } catch (error) {
         toast.error(`Ocorreu um erro : ${error}`);
       }
@@ -34,10 +33,10 @@ export default function Plan() {
     async function getPlans() {
       const response = await api.get('/plans');
       const { data } = response;
-      setPlans(data);
+      dispatch(loadSuccess(data));
     }
     getPlans();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -51,8 +50,8 @@ export default function Plan() {
         <thead>
           <tr>
             <th>TÍTULO</th>
-            <th>DURAÇÃO</th>
-            <th>VALOR p/ MÊS</th>
+            <th style={{ textAlign: 'center' }}>DURAÇÃO</th>
+            <th style={{ textAlign: 'center' }}>VALOR p/ MÊS</th>
             <th />
             <th />
           </tr>
@@ -61,8 +60,12 @@ export default function Plan() {
           {plans.map(plan => (
             <tr key={plan.id}>
               <td>{plan.title}</td>
-              <td>{plan.duration}</td>
-              <td>{plan.price}</td>
+              <td style={{ textAlign: 'center' }}>
+                {plan.duration === 1
+                  ? `${plan.duration} mês`
+                  : `${plan.duration} meses`}
+              </td>
+              <td style={{ textAlign: 'center' }}>{plan.price}</td>
               <td>
                 <button
                   type="button"

@@ -21,8 +21,10 @@ const schema = Yup.object().shape({
 
 export default function PlanForm() {
   const dispatch = useDispatch();
+
   const planData = useSelector(state => state.plan);
   const loading = useSelector(state => state.load.loading);
+
   const [totalPrice, setTotalPrice] = useState(0);
   const [duration, setDuration] = useState(1);
   const [editMode, setEditMode] = useState(false);
@@ -31,8 +33,10 @@ export default function PlanForm() {
   useEffect(() => {
     if (planData.id) {
       setEditMode(true);
+      setMonthlyPrice(planData.price);
+      setDuration(planData.duration);
     }
-  }, [planData.id]);
+  }, [planData.id, planData.price, planData.duration]);
 
   useEffect(() => {
     if (duration > 0 && montlhyPrice > 0) {
@@ -42,10 +46,8 @@ export default function PlanForm() {
           currency: 'BRL',
         }).format(montlhyPrice * duration)
       );
-    } else {
-      setTotalPrice(0);
     }
-  }, [montlhyPrice, duration]);
+  }, [duration, montlhyPrice]);
   const handleBack = () => {
     history.push('/plans');
   };
@@ -93,7 +95,6 @@ export default function PlanForm() {
               name="duration"
               label="Duração (em meses)"
               type="number"
-              value={duration}
               onChange={e => handleChangeDuration(e.target.value)}
             />
           </div>
@@ -103,15 +104,16 @@ export default function PlanForm() {
               label="Preço Mensal"
               name="price"
               type="text"
-              formvalue={montlhyPrice}
-              onValueChange={values => {
-                handleMontlyChange(values);
-              }}
               thousandSeparator="."
               decimalSeparator=","
               decimalScale={2}
               fixedDecimalScale
-              prefix="R$"
+              isNumericString
+              value={montlhyPrice}
+              onValueChange={values => {
+                handleMontlyChange(values);
+              }}
+              defaultValue={null}
             />
           </div>
           <div>

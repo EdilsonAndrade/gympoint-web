@@ -7,6 +7,7 @@ const INITIAL_VALUE = {
   age: 18,
   height: 160,
   id: null,
+  students: [],
 };
 
 export default function student(state = INITIAL_VALUE, action) {
@@ -22,7 +23,10 @@ export default function student(state = INITIAL_VALUE, action) {
         draft.id = id;
         break;
       }
-
+      case '@student/LOAD_SUCCESS': {
+        draft.students = action.payload;
+        break;
+      }
       default:
         break;
     }

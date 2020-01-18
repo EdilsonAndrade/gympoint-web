@@ -62,3 +62,19 @@ export const AnswerModal = styled.div`
     }
   }
 `;
+
+export const NoDoubt = styled.div`
+  margin: 20px auto;
+  max-width: 350px;
+  padding: 20px;
+  background: linear-gradient(#ddd, #eee);
+  display: flex;
+  justify-content: center;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  p {
+    font-weight: bold;
+    font-size: 24px;
+    color: #c2c2c2;
+  }
+`;
