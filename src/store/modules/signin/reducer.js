@@ -13,6 +13,11 @@ export default function signin(state = INITIAL_VALUE, action) {
         draft.signed = true;
         break;
       }
+      case '@signin/SIGNOUT_SUCCESS': {
+        draft.tolen = null;
+        draft.signed = null;
+        break;
+      }
       default:
     }
   });

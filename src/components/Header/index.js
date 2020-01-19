@@ -1,10 +1,13 @@
 import React from 'react';
 
 import { NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Container, Content } from './styles';
 import Logo from '../../assets/logheader.svg';
+import { signOutRequest } from '~/store/modules/signin/actions';
 
 export default function Header() {
+  const dispatch = useDispatch();
   return (
     <Container>
       <Content>
@@ -43,7 +46,9 @@ export default function Header() {
         </nav>
         <aside>
           <strong>Edilson Andrade</strong>
-          <button type="button">sair do sistema</button>
+          <button type="button" onClick={() => dispatch(signOutRequest())}>
+            sair do sistema
+          </button>
         </aside>
       </Content>
     </Container>

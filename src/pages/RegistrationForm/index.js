@@ -8,13 +8,22 @@ import Content from './styles';
 import history from '~/services/history';
 import { startLoading } from '~/store/modules/loading/actions';
 import { saveRequest } from '~/store/modules/registration/actions';
+import api from '~/services/api';
 
 export default function RegistrationForm() {
-  const students = useSelector(state => state.student.students);
   const plans = useSelector(state => state.plan.plans);
   const dispatch = useDispatch();
   const registrationData = useSelector(state => state.registration);
-
+  const [students, setStudents] = useState(
+    registrationData.student
+      ? [
+          {
+            id: registrationData.student.id,
+            title: registrationData.student.name,
+          },
+        ]
+      : []
+  );
   const studentSelect = students.map(student => ({
     id: student.id,
     title: student.name,
@@ -38,16 +47,15 @@ export default function RegistrationForm() {
       : new Date()
   );
   const [totalPrice, setTotalPrice] = useState(
-    registrationData.price && registrationData.price
+    registrationData.price ? registrationData.price : 0
   );
   const [duration, setDuration] = useState(
-    registrationData.plan && registrationData.plan.duration
+    registrationData.plan ? registrationData.plan.duration : 0
   );
 
   const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    console.tron.warn(startDate);
     if (duration > 0) {
       setEndDate(format(addMonths(startDate, duration), 'dd/MM/yyyy HH:mm:ss'));
     }
@@ -58,6 +66,15 @@ export default function RegistrationForm() {
       setEditMode(true);
     }
   }, [registrationData.id]);
+
+  useEffect(() => {
+    async function getStudents() {
+      const response = await api.get('/students');
+      setStudents(response.data);
+    }
+    getStudents();
+  }, []);
+
   const handleBack = () => {
     history.push('/registrations');
   };

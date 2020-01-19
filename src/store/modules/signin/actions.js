@@ -11,3 +11,14 @@ export const signinSuccess = token => {
     payload: token,
   };
 };
+
+export const signOutRequest = () => {
+  return {
+    type: '@signin/SIGNOUT_REQUEST',
+  };
+};
+export const signOutSuccess = () => {
+  return {
+    type: '@signin/SIGNOUT_SUCCESS',
+  };
+};

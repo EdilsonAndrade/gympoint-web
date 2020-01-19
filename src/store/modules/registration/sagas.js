@@ -4,7 +4,6 @@ import api from '../../../services/api';
 import history from '../../../services/history';
 import { saveSuccess } from './actions';
 import * as PlanActions from '../plan/actions';
-import * as StudentActions from '../student/actions';
 import { stopLoading } from '../loading/actions';
 
 function* saveRequest({ payload }) {
@@ -45,9 +44,6 @@ function* saveRequest({ payload }) {
 function* loadSuccess() {
   const plansResponse = yield call(api.get, '/plans');
   yield put(PlanActions.loadSuccess(plansResponse.data));
-
-  const studentResponse = yield call(api.get, '/students');
-  yield put(StudentActions.loadSuccess(studentResponse.data));
 }
 export default all([
   takeLatest('@registration/SAVE_REQUEST', saveRequest),

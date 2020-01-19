@@ -1,30 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import history from '../../services/history';
 import Button from '../../components/Button';
 import Grid from '../../components/Grid';
 import ButtonDiv from './styles';
 import api from '~/services/api';
-import { saveSuccess, loadSuccess } from '~/store/modules/student/actions';
+import { saveSuccess } from '~/store/modules/student/actions';
 import Pagination from '~/components/Pagination';
 
 export default function Student() {
   const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
-  const students = useSelector(state => state.student.students);
+  const [students, setStudents] = useState([]);
   const [previousPage, setPreviousPage] = useState(0);
   const [nextPage, setNextPage] = useState(2);
   const [page, setPage] = useState(1);
+  const [studentsCount, setStudentsCount] = useState(0);
+  const totalPages = 2;
   const handleCadastrar = () => {
     dispatch(saveSuccess(''));
     history.push('/student/studentform');
   };
 
   async function handleSearchStudent(e) {
-    const response = await api.get(`/students?name=${e}`);
+    const response = await api.get(
+      `/students?limit=${totalPages}&page=${page}&name=${e}`
+    );
     const { data } = response;
-    dispatch(loadSuccess(data));
+    console.tron.warn(data.rows);
+    setStudentsCount(data.count);
+    setStudents(data.rows);
   }
 
   const handleEditar = student => {
@@ -44,7 +50,9 @@ export default function Student() {
     if (window.confirm('Tem certeza que quer excluir este registro?')) {
       try {
         const response = await api.delete(`/students/${id}`);
-        dispatch(loadSuccess(response.data));
+        setStudents(response.data.rows);
+        setStudentsCount(response.data.count);
+        setPage(1);
       } catch (error) {
         toast.error(`Ocorreu um erro : ${error}`);
       }
@@ -54,8 +62,9 @@ export default function Student() {
   useEffect(() => {
     async function getStudents() {
       const response = await api.get(`/students?limit=2&page=${page}`);
+      setStudentsCount(response.data.count);
       const { data } = response;
-      dispatch(loadSuccess(data));
+      setStudents(data.rows);
       if (response.data.length <= 0) {
         setPage(page - 1);
       }
@@ -128,7 +137,7 @@ export default function Student() {
       <Pagination
         handleBackPage={() => handlePreviousPage(previousPage)}
         showBack={page > 1}
-        showForward={students.length > 0}
+        showForward={studentsCount / totalPages > page}
         handleForwardPage={() => handleNextPage(nextPage)}
       />
     </>
